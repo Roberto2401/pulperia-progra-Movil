@@ -26,8 +26,8 @@ class _LoginWidgetState extends State<LoginWidget> {
     super.initState();
     _model = createModel(context, () => LoginModel());
 
-    _model.txtUsuarioController = TextEditingController();
-    _model.txtClaveController = TextEditingController();
+    _model.txtUsuarioController ??= TextEditingController();
+    _model.txtClaveController ??= TextEditingController();
   }
 
   @override
@@ -46,13 +46,21 @@ class _LoginWidgetState extends State<LoginWidget> {
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: false,
-        title: Text(
-          'La pulpe',
-          style: FlutterFlowTheme.of(context).title2.override(
-                fontFamily: 'Poppins',
-                color: Colors.white,
-                fontSize: 22,
-              ),
+        title: InkWell(
+          onTap: () async {
+            GoRouter.of(context).prepareAuthEvent();
+            await signOut();
+
+            context.goNamedAuth('Login', mounted);
+          },
+          child: Text(
+            'La pulpe',
+            style: FlutterFlowTheme.of(context).title2.override(
+                  fontFamily: 'Poppins',
+                  color: Colors.white,
+                  fontSize: 22,
+                ),
+          ),
         ),
         actions: [],
         centerTitle: false,
@@ -91,8 +99,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             ),
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
-                                color:
-                                    FlutterFlowTheme.of(context).secondaryText,
+                                color: Color(0x00000000),
                                 width: 1,
                               ),
                               borderRadius: BorderRadius.circular(20),
